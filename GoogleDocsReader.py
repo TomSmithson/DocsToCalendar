@@ -13,6 +13,7 @@ class GoogleDocsReader:
         self._service = None
         self._doc = None
     
+
     def authenticate(self):
         """
         Authenticating a user and returning a 
@@ -32,12 +33,14 @@ class GoogleDocsReader:
                 pickle.dump(creds, token)
         self._service = build("docs", "v1", credentials=creds)
 
+
     def get_document(self, document_id):
         """
         Searches for the specified document
         and sets to the object
         """
         self._doc = self._service.documents().get(documentId=document_id).execute()
+
 
     def read_document_by_line(self):
         """
@@ -54,6 +57,7 @@ class GoogleDocsReader:
                     lines.append(elem.get("textRun").get("content"))
         return lines
 
+
     def text_to_dict(self, lines):
         """
         Iterates through the list of lines
@@ -64,7 +68,7 @@ class GoogleDocsReader:
         for line in lines:
             if ":" in line:
                 data = line.split("-")
-                data[0] = data[0][:-3]
+                # data[0] = data[0][:-3]
                 data[0], data[1] = data[0].strip(), data[1].strip()
                 daily_activities[data[0]] = data[1]
         return daily_activities
